@@ -4,11 +4,11 @@ sequenceDiagram
     participant server
     
     browser->>server: POST https://studies.cs.helsinki.fi/exampleapp/new_note
-    Note right of browser: The browser sends the form data in the body to the server
     activate server
+    Note right of browser: The browser sends the form data in the body to the server
     server-->>browser: Redirect response to /exampleapp/notes
-    Note left of server: The server saves the data in the array and send response
     deactivate server
+    Note left of server: The server saves the data in the array and send response
 
     browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/notes
     activate server
