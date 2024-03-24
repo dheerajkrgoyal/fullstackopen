@@ -7,7 +7,7 @@ sequenceDiagram
     Note right of browser: The browser sends the form data in the body to the server
     activate server
     server-->>browser: Redirect response to /exampleapp/notes
-    Note right of server: The server saves the data in the array and send response
+    Note left of server: The server saves the data in the array and send response
     deactivate server
 
     browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/notes
