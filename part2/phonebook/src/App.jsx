@@ -16,11 +16,22 @@ const App = () => {
 
   const filteredPerson = persons.filter(person => person.name.toLowerCase().includes(searchTerm.toLowerCase()))
 
+  const setNotification = (notificationMessage, error) => {
+    setIsError(error)
+    setUserMessage(notificationMessage)
+    setTimeout(() => {
+      setUserMessage(null)
+    }, 2000)
+  }
+
   useEffect(()=> {
     personService
       .getAll()
       .then(initialPersons => {
         setPersons(initialPersons)
+      })
+      .catch(error => {
+        setNotification('Error loading data from the server. Please try later')
       })
   },[])
 
@@ -38,41 +49,32 @@ const App = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault()
-    const duplicateIndex = persons.findIndex(person => person.name === newName)
-    if(duplicateIndex === -1){
+    const duplicate = persons.find(person => person.name === newName)
+    if(!duplicate){
       const newPerson = {name: newName, number: newNumber}
       personService
         .create(newPerson)
         .then(createdObj => {
           setPersons(persons.concat(createdObj))
+          setNotification(`Added ${newName}`, false)
           setNewName('')
           setNewNumber('')
-          setIsError(false)
-          setUserMessage(`Added ${newName}`)
-          setTimeout(() => {
-            setUserMessage(null)
-          }, 2000)
+        })
+        .catch(error => {
+          setNotification(error.response.data.error, true)
         })
     }else{
-      if(persons[duplicateIndex].number !== newNumber){
+      if(duplicate.number !== newNumber){
         if(confirm(`${newName} is already added to phonebook, replace the old number with a new one?`)){
-          const updateObj = {...persons[duplicateIndex], number: newNumber}
+          const updateObj = {...duplicate, number: newNumber}
           personService
             .update(updateObj.id, updateObj)
             .then(updatedObj => {
               setPersons(persons.map(person => person.id !== updatedObj.id? person : updatedObj))
-              setIsError(false)
-              setUserMessage(`${newName} is updated with new number ${newNumber}`)
-              setTimeout(() => {
-                setUserMessage(null)
-              }, 2000)
+              setNotification(`${newName} is updated with new number ${newNumber}`, false)
             })
             .catch(error => {
-              setIsError(true)
-              setUserMessage(`Information of ${newName} has already been removed from the server`)
-              setTimeout(() => {
-                setUserMessage(null)
-              }, 2000)
+              setNotification(`Information of ${newName} has already been removed from the server`, true)
             })
           setNewName('')
           setNewNumber('')
