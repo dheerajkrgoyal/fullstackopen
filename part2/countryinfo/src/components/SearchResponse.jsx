@@ -1,6 +1,6 @@
 import CountryInfo from "./CountryInfo"
 
-const SearchResult = ({filteredCountry, setCountryValue}) => {
+const SearchResponse = ({filteredCountry, setCountryValue}) => {
 
     const handleShow = (countryName) => {
         setCountryValue(countryName)
@@ -25,4 +25,4 @@ const SearchResult = ({filteredCountry, setCountryValue}) => {
     }
 }
 
-export default SearchResult
+export default SearchResponse

@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react"
 import axios from "axios"
-import SearchResult from "./components/SearchResult"
+import SearchResponse from "./components/SearchResponse"
 
 const App = () => {
 
@@ -36,7 +36,7 @@ const App = () => {
   return (
     <div>
         Find Countries: <input value={countryValue} onChange={handleCountryValue} />
-        <SearchResult filteredCountry={filteredCountry} setCountryValue={setCountryValue} />
+        <SearchResponse filteredCountry={filteredCountry} setCountryValue={setCountryValue} />
     </div>
   )
 }
